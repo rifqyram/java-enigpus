@@ -39,6 +39,6 @@ public class Magazine extends Book {
         return "Magazine;" + code +
                 ";" + title +
                 ";" + publisher +
-                ";" + publisher;
+                ";" + publicationYear;
     }
 }
