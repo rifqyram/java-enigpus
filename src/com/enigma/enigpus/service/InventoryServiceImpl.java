@@ -52,19 +52,9 @@ public class InventoryServiceImpl implements InventoryService {
                 stringBooks.add(result);
             }
 
-            for (String stringBook : stringBooks) {
-                String[] split = stringBook.split(";");
-                if (split[0].startsWith("N")) {
-                    books.add(new Novel(split[1], split[2], split[3], Integer.parseInt(split[4]), split[5]));
-                } else {
-                    books.add(new Magazine(split[1], split[2], split[3], Integer.parseInt(split[4])));
-                }
-            }
+            convertFileToBooks(books, stringBooks);
 
-            if (books.isEmpty()) {
-                System.out.println("Book is empty");
-                return null;
-            }
+            if (isBooksEmpty(books)) return null;
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -81,10 +71,7 @@ public class InventoryServiceImpl implements InventoryService {
             if (book.getTitle().equalsIgnoreCase(title)) filteredBook.add(book);
         }
 
-        if (filteredBook.isEmpty()) {
-            System.out.println("Book not found");
-            return null;
-        }
+        if (isBooksEmpty(filteredBook)) return null;
 
         return filteredBook;
     }
@@ -109,6 +96,25 @@ public class InventoryServiceImpl implements InventoryService {
             return true;
         }
         return false;
+    }
+
+    private boolean isBooksEmpty(List<Book> books) {
+        if (books.isEmpty()) {
+            System.out.println("Book is empty");
+            return true;
+        }
+        return false;
+    }
+
+    private void convertFileToBooks(List<Book> books, List<String> stringBooks) {
+        for (String stringBook : stringBooks) {
+            String[] split = stringBook.split(";");
+            if (split[0].startsWith("N")) {
+                books.add(new Novel(split[1], split[2], split[3], Integer.parseInt(split[4]), split[5]));
+            } else {
+                books.add(new Magazine(split[1], split[2], split[3], Integer.parseInt(split[4])));
+            }
+        }
     }
 
     private void subscribe() {
