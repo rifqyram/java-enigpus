@@ -107,7 +107,6 @@ public class EnigpusView {
         System.out.println(repeat(30, "="));
         System.out.println("Tambahkan Informasi Majalah");
         System.out.println(repeat(30, "="));
-        System.out.println("Inputkan code buku");
         String code = Util.input("Inputkan code buku");
         String title = Util.input("Inputkan judul buku");
         String publisher = Util.input("Inputkan penerbit buku");
