@@ -5,33 +5,23 @@ import com.enigma.enigpus.entity.Magazine;
 import com.enigma.enigpus.entity.Novel;
 import com.enigma.enigpus.service.InventoryService;
 import com.enigma.enigpus.service.InventoryServiceImpl;
+import com.enigma.enigpus.util.Util;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class EnigpusView {
 
-    private final Scanner scanner;
     private final InventoryService inventoryService;
 
     public EnigpusView() {
-        this.scanner = new Scanner(System.in);
         this.inventoryService = new InventoryServiceImpl();
     }
 
     public void menu() {
         whileLoop:
         while (true) {
-            System.out.println("Pilih Menu");
-            System.out.println("==============================");
-            System.out.println("1. Menambahkan buku\n" +
-                    "2. Melihat isi buku\n" +
-                    "3. Mencari buku berdasarkan judul\n" +
-                    "4. Merubah buku\n" +
-                    "5. Menghapus buku\n" +
-                    "X. Keluar dari aplikasi");
-            System.out.println("==============================");
-            switch (scanner.nextLine()) {
+            printMainMenu();
+            switch (Util.input("Pilih")) {
                 case "1":
                     addBookMenu();
                     break;
@@ -57,14 +47,27 @@ public class EnigpusView {
         }
     }
 
+    private void printMainMenu() {
+        System.out.println(repeat(30, "="));
+        System.out.println("Pilih Menu");
+        System.out.println("1. Menambahkan buku\n" +
+                "2. Melihat isi buku\n" +
+                "3. Mencari buku berdasarkan judul\n" +
+                "4. Merubah buku\n" +
+                "5. Menghapus buku\n" +
+                "X. Keluar dari aplikasi");
+        System.out.println(repeat(30, "="));
+    }
+
     private void addBookMenu() {
-        System.out.println("====================");
+        System.out.println(repeat(20, "-"));
         System.out.println("Inputkan jenis buku");
-        System.out.println("====================");
+        System.out.println(repeat(20, "-"));
         System.out.println("1. Novel\n" +
-                "2. Majalah");
-        System.out.println("====================");
-        switch (scanner.nextLine()) {
+                "2. Majalah\n" +
+                "X. Kembali ke menu utama");
+        System.out.println(repeat(30, "="));
+        switch (Util.input("Pilih")) {
             case "1":
                 addNovel();
                 break;
@@ -79,23 +82,18 @@ public class EnigpusView {
                 System.out.println("Wrong Input");
                 break;
         }
-        System.out.println("=========================");
+        System.out.println(repeat(30, "="));
     }
 
     private void addNovel() {
-        System.out.println("=========================");
+        System.out.println(repeat(30, "="));
         System.out.println("Tambahkan Informasi Novel");
-        System.out.println("=========================");
-        System.out.println("Inputkan code buku");
-        String code = scanner.nextLine();
-        System.out.println("Inputkan judul buku");
-        String title = scanner.nextLine();
-        System.out.println("Inputkan penerbit buku");
-        String publisher = scanner.nextLine();
-        System.out.println("Inputkan tahun terbit buku");
-        String publicationYear = scanner.nextLine();
-        System.out.println("Inputkan penulis buku");
-        String author = scanner.nextLine();
+        System.out.println(repeat(30, "="));
+        String code = Util.input("Inputkan code buku");
+        String title = Util.input("Inputkan judul buku");
+        String publisher = Util.input("Inputkan penerbit buku");
+        String publicationYear = Util.input("Inputkan tahun terbit buku");
+        String author = Util.input("Inputkan penulis buku");
 
         try {
             Book novel = new Novel(code, title, publisher, Integer.parseInt(publicationYear), author);
@@ -106,17 +104,14 @@ public class EnigpusView {
     }
 
     private void addMagazine() {
-        System.out.println("=========================");
-        System.out.println("Tambahkan Informasi Novel");
-        System.out.println("=========================");
+        System.out.println(repeat(30, "="));
+        System.out.println("Tambahkan Informasi Majalah");
+        System.out.println(repeat(30, "="));
         System.out.println("Inputkan code buku");
-        String code = scanner.nextLine();
-        System.out.println("Inputkan judul buku");
-        String title = scanner.nextLine();
-        System.out.println("Inputkan penerbit buku");
-        String publisher = scanner.nextLine();
-        System.out.println("Inputkan tahun terbit buku");
-        String publicationYear = scanner.nextLine();
+        String code = Util.input("Inputkan code buku");
+        String title = Util.input("Inputkan judul buku");
+        String publisher = Util.input("Inputkan penerbit buku");
+        String publicationYear = Util.input("Inputkan tahun terbit buku");
 
         try {
             Book magazine = new Magazine(code, title, publisher, Integer.parseInt(publicationYear));
@@ -127,36 +122,30 @@ public class EnigpusView {
     }
 
     private void getAllBook() {
-        System.out.println("=========================");
+        System.out.println(repeat(30, "="));
         System.out.println("Daftar Semua Buku");
-        System.out.println("=========================");
+        System.out.println(repeat(30, "="));
 
         List<Book> books = inventoryService.getAll();
-        for (Book book : books) {
-            printBook(book);
-        }
+        printBooks(books);
 
-        System.out.println("=========================");
+        System.out.println(repeat(30, "="));
     }
 
     private void searchBookByTitle() {
-        System.out.println("=========================");
-        System.out.println("Inputkan judul buku yang ingin dicari");
-        String title = scanner.nextLine();
+        System.out.println(repeat(30, "="));
+        String title = Util.input("Inputkan judul buku yang ingin dicari");
 
         List<Book> books = inventoryService.searchByTitle(title);
-        for (Book book : books) {
-            printBook(book);
-        }
+        printBooks(books);
 
-        System.out.println("=========================");
+        System.out.println(repeat(30, "="));
     }
 
     private void updateBook() {
-        System.out.println("=========================");
-        System.out.println("Inputkan code buku yang ingin dirubah");
-        String code = scanner.nextLine();
-        System.out.println("=========================");
+        System.out.println(repeat(30, "="));
+        String code = Util.input("Inputkan code buku yang ingin dirubah");
+        System.out.println(repeat(30, "="));
 
         Book book = inventoryService.getOne(code);
 
@@ -173,14 +162,10 @@ public class EnigpusView {
 
     private Book updateNovel(Book book) {
         Novel novel = (Novel) book;
-        System.out.println("Inputkan judul buku");
-        String title = scanner.nextLine();
-        System.out.println("Inputkan penerbit buku");
-        String publisher = scanner.nextLine();
-        System.out.println("Inputkan tahun terbit buku");
-        String publicationYear = scanner.nextLine();
-        System.out.println("Inputkan penulis buku");
-        String author = scanner.nextLine();
+        String title = Util.input("Inputkan judul buku");
+        String publisher = Util.input("Inputkan penerbit buku");
+        String publicationYear = Util.input("Inputkan tahun terbit buku");
+        String author = Util.input("Inputkan penulis buku");
 
         try {
             book = new Novel(novel.getCode(), title, publisher, Integer.parseInt(publicationYear), author);
@@ -193,12 +178,9 @@ public class EnigpusView {
 
     private Book updateMagazine(Book book) {
         Magazine magazine = (Magazine) book;
-        System.out.println("Inputkan judul buku");
-        String title = scanner.nextLine();
-        System.out.println("Inputkan penerbit buku");
-        String publisher = scanner.nextLine();
-        System.out.println("Inputkan tahun terbit buku");
-        String publicationYear = scanner.nextLine();
+        String title = Util.input("Inputkan judul buku");
+        String publisher = Util.input("Inputkan penerbit buku");
+        String publicationYear = Util.input("Inputkan tahun terbit buku");
 
         try {
             book = new Magazine(magazine.getCode(), title, publisher, Integer.parseInt(publicationYear));
@@ -210,23 +192,32 @@ public class EnigpusView {
     }
 
     private void deleteBook() {
-        System.out.println("=========================");
-        System.out.println("Inputkan code buku yang ingin dihapus");
-        String code = scanner.nextLine();
-        System.out.println("=========================");
-        inventoryService.delete(code);
+        System.out.println(repeat(30, "="));
+        String code = Util.input("Inputkan code buku yang ingin dihapus");
+        System.out.println(repeat(30, "="));
+        boolean delete = inventoryService.delete(code);
+        if (delete) System.out.println("Book deleted successfully");
+        System.out.println(repeat(30, "="));
     }
 
-    private void printBook(Book book) {
-        if (book.toString().startsWith("N")) {
-            Novel novel = (Novel) book;
-            System.out.printf("Type: Novel, Code: %s, Judul, %s, Penerbit: %s, Tahun Terbit: %d, Penulis: %s\n",
-                    novel.getCode(), novel.getTitle(), novel.getPublisher(), novel.getPublicationYear(), novel.getAuthor());
-        } else {
-            Magazine novel = (Magazine) book;
-            System.out.printf("Type: Majalah, Code: %s, Judul, %s, Penerbit: %s, Tahun Terbit: %d\n",
-                    novel.getCode(), novel.getTitle(), novel.getPublisher(), novel.getPublicationYear());
+    private void printBooks(List<Book> books) {
+        if (books == null) return;
+        for (Book book : books) {
+            if (book.toString().startsWith("N")) {
+                Novel novel = (Novel) book;
+                System.out.printf("Type: Novel, Code: %s, Judul, %s, Penerbit: %s, Tahun Terbit: %d, Penulis: %s\n",
+                        novel.getCode(), novel.getTitle(), novel.getPublisher(), novel.getPublicationYear(), novel.getAuthor());
+            } else {
+                Magazine novel = (Magazine) book;
+                System.out.printf("Type: Majalah, Code: %s, Judul, %s, Penerbit: %s, Tahun Terbit: %d\n",
+                        novel.getCode(), novel.getTitle(), novel.getPublisher(), novel.getPublicationYear());
+            }
+
         }
+    }
+
+    private String repeat(int n, String str) {
+        return new String(new char[n]).replace("\0", str);
     }
 
 }
