@@ -21,16 +21,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public void add(Book book) {
-        if (!books.isEmpty()) {
-            for (Book currentBook : books) {
-                String currentBookCode = currentBook.toString().split(";")[1];
-                String newBookCode = book.toString().split(";")[1];
-                if (currentBookCode.equalsIgnoreCase(newBookCode)) {
-                    System.out.println("Book code already exist");
-                    return;
-                }
-            }
-        }
+        if (isDataExist(book)) return;
         books.add(book);
     }
 
@@ -85,6 +76,20 @@ public class InventoryServiceImpl implements InventoryService {
         if (book != null) {
             books.remove(book);
             return true;
+        }
+        return false;
+    }
+
+    private boolean isDataExist(Book book) {
+        if (!books.isEmpty()) {
+            for (Book currentBook : books) {
+                String currentBookCode = currentBook.toString().split(";")[1];
+                String newBookCode = book.toString().split(";")[1];
+                if (currentBookCode.equalsIgnoreCase(newBookCode)) {
+                    System.out.println("Book code already exist");
+                    return true;
+                }
+            }
         }
         return false;
     }
