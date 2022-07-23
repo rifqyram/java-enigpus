@@ -62,7 +62,8 @@ public class EnigpusView {
         System.out.println("Inputkan jenis buku");
         System.out.println("====================");
         System.out.println("1. Novel\n" +
-                "2. Majalah");
+                "2. Majalah\n" +
+                "3. Kembali ke menu utama");
         System.out.println("====================");
         switch (scanner.nextLine()) {
             case "1":
@@ -132,9 +133,7 @@ public class EnigpusView {
         System.out.println("=========================");
 
         List<Book> books = inventoryService.getAll();
-        for (Book book : books) {
-            printBook(book);
-        }
+        printBooks(books);
 
         System.out.println("=========================");
     }
@@ -145,9 +144,7 @@ public class EnigpusView {
         String title = scanner.nextLine();
 
         List<Book> books = inventoryService.searchByTitle(title);
-        for (Book book : books) {
-            printBook(book);
-        }
+        printBooks(books);
 
         System.out.println("=========================");
     }
@@ -217,15 +214,18 @@ public class EnigpusView {
         inventoryService.delete(code);
     }
 
-    private void printBook(Book book) {
-        if (book.toString().startsWith("N")) {
-            Novel novel = (Novel) book;
-            System.out.printf("Type: Novel, Code: %s, Judul, %s, Penerbit: %s, Tahun Terbit: %d, Penulis: %s\n",
-                    novel.getCode(), novel.getTitle(), novel.getPublisher(), novel.getPublicationYear(), novel.getAuthor());
-        } else {
-            Magazine novel = (Magazine) book;
-            System.out.printf("Type: Majalah, Code: %s, Judul, %s, Penerbit: %s, Tahun Terbit: %d\n",
-                    novel.getCode(), novel.getTitle(), novel.getPublisher(), novel.getPublicationYear());
+    private void printBooks(List<Book> books) {
+        if (books == null) return;
+        for (Book book : books) {
+            if (book.toString().startsWith("N")) {
+                Novel novel = (Novel) book;
+                System.out.printf("Type: Novel, Code: %s, Judul, %s, Penerbit: %s, Tahun Terbit: %d, Penulis: %s\n",
+                        novel.getCode(), novel.getTitle(), novel.getPublisher(), novel.getPublicationYear(), novel.getAuthor());
+            } else {
+                Magazine novel = (Magazine) book;
+                System.out.printf("Type: Majalah, Code: %s, Judul, %s, Penerbit: %s, Tahun Terbit: %d\n",
+                        novel.getCode(), novel.getTitle(), novel.getPublisher(), novel.getPublicationYear());
+            }
         }
     }
 
